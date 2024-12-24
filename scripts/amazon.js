@@ -56,7 +56,8 @@ products.forEach((product) => {
     `;
 });
 
-document.querySelector('.products-grid').innerHTML  = productsHTML;
+document.querySelector('.products-grid')
+    .innerHTML  = productsHTML;
 
 document.querySelectorAll('.add-to-cart-button')
         .forEach((buttonElement) => {
@@ -79,7 +80,17 @@ document.querySelectorAll('.add-to-cart-button')
                           quantity: 1
                       });
         }
-        console.log(cart);
+        
+        let cartQuantity = 0;
+        
+        cart.forEach((item) => {
+            cartQuantity += item.quantity;
+        });
+        
+        document.querySelector('.cart-quantity')
+            .innerHTML = cartQuantity;
+        //console.log(cartQuantity);
+        //console.log(cart);
     });
 });
 
