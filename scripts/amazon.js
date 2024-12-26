@@ -74,6 +74,7 @@ function updateCartQuantity() {
         .innerHTML = cartQuantity;
 }
 
+let timer;
 
 document.querySelectorAll('.add-to-cart-button')
         .forEach((buttonElement) => {
@@ -86,17 +87,19 @@ document.querySelectorAll('.add-to-cart-button')
         
         const addedElement = buttonElement.parentElement
             .querySelector(`.add-cart-${productId}`);
-        addedElement.style.opacity = '1';
-        
-        let timer;
+        if (addedElement) {
+            addedElement.style.opacity = '1';
+        }
 
-
-        function endAndStartTimer(timer, addedElement) {
+        function endAndStartTimer() {
             clearTimeout(timer);
             timer = setTimeout(() => {
-                addedElement.style.opacity = '0';
+                if (addedElement) {
+                    addedElement.style.opacity = '0';
+                }
             }, 2000);
         }
+        
         endAndStartTimer();
         
         addedElement.classList.add('added');
