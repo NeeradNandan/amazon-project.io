@@ -209,3 +209,13 @@
   margin-top: 11px;
   margin-bottom: 15px;
 }
+
+.input-frame {
+  width: 50px;
+  display: none;
+}
+
+.save-link-primary {
+  display: none;
+}
+
