@@ -14,7 +14,7 @@ if(!cart) {
         }];
 }
 
-export function addToCart(productId, productQuantity) {
+export function addToCart(productId) {
     let matchingItem;
 
     cart.forEach((cartItem) => {
