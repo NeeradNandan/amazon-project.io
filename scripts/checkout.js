@@ -6,7 +6,7 @@ let cartSummaryHTML = '';
 
 cart.forEach((cartItem) => {
     const productId = cartItem.id;
-    const productQuantity = cartItem.quantity;
+    //const productQuantity = cartItem.quantity;
 
     let matchingProduct;
 
@@ -25,7 +25,7 @@ cart.forEach((cartItem) => {
 
             <div class="cart-item-details-grid">
               <img class="product-image"
-                src="${matchingProduct.image}">
+                src="${matchingProduct.image}" alt="Product Image">
 
               <div class="cart-item-details">
                 <div class="product-name">
@@ -159,7 +159,7 @@ function updateSave(productId) {
     saveToCart();
 
     document.querySelector(`.quantity-label-${productId}`).innerHTML = `${quantityLabel(productId)}`;
-    document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a class="return-to-home-link"href="amazon.html">${displayCartQuantity(cart)} items</a>)`;
+    document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a class="return-to-home-link" href="amazon.html">${displayCartQuantity(cart)} items</a>)`;
     document.querySelector('.payment-summary-items').innerHTML = `Items (${displayCartQuantity(cart)})`;
 
     document.querySelector('.update-quantity-link').style.display = 'inline';
