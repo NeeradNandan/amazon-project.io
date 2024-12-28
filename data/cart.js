@@ -57,7 +57,7 @@ export function saveToCart() {
 export function displayCartQuantity() {
     let cartQuantity = 0;
     cart.forEach((cartItem) => {
-        cartQuantity += cartItem.quantity;
+        cartQuantity += Number(cartItem.quantity);
     })
 
     return Number(cartQuantity);
