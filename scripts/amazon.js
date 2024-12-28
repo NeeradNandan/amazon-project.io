@@ -1,4 +1,4 @@
-import {addToCart, displayCartQuantity} from "../data/cart.js";
+import {cart, addToCart, displayCartQuantity} from "../data/cart.js";
 import {products} from '../data/products.js';
 import {formatCurrency} from "./utils/money.js";
 
@@ -64,7 +64,7 @@ document.querySelector('.products-grid')
     .innerHTML  = productsHTML;
 
 function updateCartQuantity() {
-    document.querySelector('.cart-quantity').innerHTML = String(displayCartQuantity());
+    document.querySelector('.cart-quantity').innerHTML = String(displayCartQuantity(cart));
 }
 
 updateCartQuantity();
@@ -82,7 +82,7 @@ document.querySelectorAll('.add-to-cart-button')
                     //console.log(cartQuantity);
 
                     document.querySelector('.cart-quantity')
-                        .innerHTML = String(displayCartQuantity());
+                        .innerHTML = String(displayCartQuantity(cart));
 
 
 

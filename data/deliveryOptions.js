@@ -1,3 +1,6 @@
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+import {cart, saveToCart} from "./cart.js";
+
 export const deliveryOptions = [
     {
         id: '1',
@@ -26,3 +29,40 @@ export function getDeliveryOption(deliveryOptionsId) {
     });
     return deliveryOption || deliveryOptions[0]
 }
+
+export function updateDeliveryOption(productId, deliveryOptionId) {
+    let matchingItem;
+
+    cart.forEach((cartItem) => {
+        if (productId === cartItem.id) {
+            matchingItem = cartItem;
+        }
+    });
+
+    matchingItem.deliveryOptionId = deliveryOptionId;
+
+    saveToCart();
+}
+
+export function deliveryDate (deliveryOptionsId) {
+    //return dayjs().add(getDeliveryOption(deliveryOptionsId).deliveryDays, 'days')
+
+    let remainingDays = getDeliveryOption(deliveryOptionsId).deliveryDays;
+    let deliveryDate = dayjs();
+
+    while (remainingDays > 0) {
+        deliveryDate = deliveryDate.add(1, 'days');
+
+        if (!isWeekend(deliveryDate)) {
+            remainingDays--;
+        }
+    }
+    return deliveryDate
+}
+
+function isWeekend(date) {
+    const dayOfWeek = date.format('dddd');
+
+    return dayOfWeek === 'Saturday' || dayOfWeek === 'Sunday';
+}
+
