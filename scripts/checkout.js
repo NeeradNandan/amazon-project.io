@@ -1,41 +1,38 @@
-import {cart, deleteFromCart, displayCartQuantity, updateQuantity} from '../data/cart.js';
+import {cart, deleteFromCart, displayCartQuantity, updateQuantity, updateDeliveryOption} from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency} from "./utils/money.js";
 import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
 import {deliveryOptions} from "../data/deliveryOptions.js";
 
+function renderOrderSummary() {
+    let cartSummaryHTML = '';
+    cart.forEach((cartItem) => {
+        const productId = cartItem.id;
+        //const productQuantity = cartItem.quantity;
+
+        let matchingProduct;
+
+        products.forEach((product) => {
+            if (productId === product.id) {
+                matchingProduct = product;
+            }
+        });
+
+        const deliveryOptionsId = cartItem.deliveryOptionId;
+        let deliveryOption;
+
+        deliveryOptions.forEach((option) => {
+            if (option.id === deliveryOptionsId) {
+                deliveryOption = option;
+            }
+        });
+
+        const todayDate = dayjs();
+        const deliveryDate = todayDate.add(deliveryOption.deliveryDays, 'days');
+        const dateString = deliveryDate.format('dddd, MMMM D');
 
 
-
-let cartSummaryHTML = '';
-
-cart.forEach((cartItem) => {
-    const productId = cartItem.id;
-    //const productQuantity = cartItem.quantity;
-
-    let matchingProduct;
-
-    products.forEach((product) => {
-        if (productId === product.id) {
-            matchingProduct = product;
-        }
-    });
-
-    const deliveryOptionsId = cartItem.deliveryOptionId;
-    let deliveryOption;
-
-    deliveryOptions.forEach((option) => {
-        if (option.id === deliveryOptionsId) {
-            deliveryOption = option;
-        }
-    });
-
-    const todayDate = dayjs();
-    const deliveryDate = todayDate.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
-
-
-    cartSummaryHTML += `
+        cartSummaryHTML += `
     <div class="cart-item-container cart-item-container-${matchingProduct.id}">
             <div class="delivery-date-${matchingProduct.id} delivery-date">
               Delivery date: ${dateString}
@@ -83,100 +80,102 @@ cart.forEach((cartItem) => {
             </div>
           </div>
     `
-});
-
-document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
-
-document.querySelectorAll('.delete-quantity-link')
-    .forEach((linkElement) => {
-    linkElement
-        .addEventListener('click', () => {
-            const productId = linkElement.dataset.productId;
-
-            deleteFromCart(productId);
-
-            const container = document.querySelector(`.cart-item-container-${productId}`);
-            container.remove();
-
-            updateCartQuantity();
-
-
-
-            /*
-            My implementation
-            document.querySelector(`.cart-item-container-${productId}`).remove();
-            document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a
-             class="return-to-home-link" href="amazon.html">${displayCartQuantity(cart)} items</a>)`;
-            document.querySelector('.payment-summary-items').innerHTML = `Items (${displayCartQuantity(cart)})`;
-            //console.log(cart);
-
-             */
-
     });
-});
-function updateCartQuantity() {
 
-    //console.log(typeof displayCartQuantity());
-    document.querySelector('.return-home-link')
-        .innerHTML = `${displayCartQuantity()} items`;
-}
+    document.querySelector('.order-summary').innerHTML = cartSummaryHTML;
 
-updateCartQuantity();
+    document.querySelectorAll('.delete-quantity-link')
+            .forEach((linkElement) => {
+                linkElement
+                    .addEventListener('click', () => {
+                        const productId = linkElement.dataset.productId;
 
-document.querySelectorAll('.update-quantity-link')
-    .forEach((linkElement) => {
-    linkElement
-        .addEventListener('click', () => {
-            const productId = linkElement.dataset.productId;
-            console.log(productId);
-            const container = document.querySelector(`.cart-item-container-${productId}`);
+                        deleteFromCart(productId);
 
-            console.log(container);
+                        const container = document.querySelector(`.cart-item-container-${productId}`);
+                        container.remove();
 
-            container.classList.add('is-editing-quantity');
+                        updateCartQuantity();
 
 
-        })
-})
+                        /*
+                         My implementation
+                         document.querySelector(`.cart-item-container-${productId}`).remove();
+                         document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a
+                         class="return-to-home-link" href="amazon.html">${displayCartQuantity(cart)} items</a>)`;
+                         document.querySelector('.payment-summary-items').innerHTML = `Items (${displayCartQuantity(cart)})`;
+                         //console.log(cart);
 
-document.querySelectorAll('.save-quantity-link')
-    .forEach((linkElement) => {
-        linkElement
-            .addEventListener('click', () => {
-                const productId = linkElement.dataset.productId;
+                         */
 
-                const quantityInput = document.querySelector(`.quantity-input-${productId}`);
-                const newQuantity = quantityInput.value;
+                    });
+            });
 
-                
-                updateQuantity(productId, newQuantity);
+    function updateCartQuantity() {
 
-                const container = document.querySelector(`.cart-item-container-${productId}`);
-                container.classList.remove('is-editing-quantity');
+        //console.log(typeof displayCartQuantity());
+        document.querySelector('.return-home-link')
+            .innerHTML = `${displayCartQuantity()} items`;
+    }
 
-                const quantityLabel = document.querySelector(`.quantity-label-${productId}`);
-                quantityLabel.innerHTML = newQuantity;
+    updateCartQuantity();
 
-                updateCartQuantity();
+    document.querySelectorAll('.update-quantity-link')
+            .forEach((linkElement) => {
+                linkElement
+                    .addEventListener('click', () => {
+                        const productId = linkElement.dataset.productId;
+                        console.log(productId);
+                        const container = document.querySelector(`.cart-item-container-${productId}`);
+
+                        console.log(container);
+
+                        container.classList.add('is-editing-quantity');
 
 
-            })
-    })
+                    });
+            });
 
-function deliveryOptionsHTML(matchingProduct, cartItem) {
+    document.querySelectorAll('.save-quantity-link')
+            .forEach((linkElement) => {
+                linkElement
+                    .addEventListener('click', () => {
+                        const productId = linkElement.dataset.productId;
 
-let html = '';
+                        const quantityInput = document.querySelector(`.quantity-input-${productId}`);
+                        const newQuantity = quantityInput.value;
 
-deliveryOptions.forEach((deliveryOption) => {
-    const todayDate = dayjs();
-    const deliveryDate = todayDate.add(deliveryOption.deliveryDays, 'days');
-    const dateString = deliveryDate.format('dddd, MMMM D');
-    const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)}`
-    const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
 
-    html +=
-    ` 
-                <div class="delivery-option">
+                        updateQuantity(productId, newQuantity);
+
+                        const container = document.querySelector(`.cart-item-container-${productId}`);
+                        container.classList.remove('is-editing-quantity');
+
+                        const quantityLabel = document.querySelector(`.quantity-label-${productId}`);
+                        quantityLabel.innerHTML = newQuantity;
+
+                        updateCartQuantity();
+
+
+                    });
+            });
+
+    function deliveryOptionsHTML(matchingProduct, cartItem) {
+
+        let html = '';
+
+        deliveryOptions.forEach((deliveryOption) => {
+            const todayDate = dayjs();
+            const deliveryDate = todayDate.add(deliveryOption.deliveryDays, 'days');
+            const dateString = deliveryDate.format('dddd, MMMM D');
+            const priceString = deliveryOption.priceCents === 0 ? 'FREE' : `$${formatCurrency(deliveryOption.priceCents)}`
+            const isChecked = deliveryOption.id === cartItem.deliveryOptionId;
+
+            html +=
+                ` 
+                <div class="delivery-option deliveryOptions"
+                data-product-id="${matchingProduct.id}"
+                data-delivery-option-id="${deliveryOption.id}">
                   <input type="radio" ${isChecked ? 'checked' : ''}
                     class="delivery-option-input"
                     name="${matchingProduct.id}">
@@ -185,13 +184,26 @@ deliveryOptions.forEach((deliveryOption) => {
                       ${dateString}
                     </div>
                     <div class="delivery-option-price">
-                      ${priceString} Shipping
+                      ${priceString} - Shipping
                     </div>
                   </div>
                 </div>`
-})
-    return html;
+        });
+        return html
+    }
+
+    document.querySelectorAll('.deliveryOptions')
+            .forEach((optionElement) => {
+                optionElement
+                    .addEventListener('click', () => {
+                        const {productId, deliveryOptionId} = optionElement.dataset;
+                        updateDeliveryOption(productId, deliveryOptionId);
+                        renderOrderSummary();
+                    });
+            })
 }
+renderOrderSummary();
+
 
 /*
 My implementation
