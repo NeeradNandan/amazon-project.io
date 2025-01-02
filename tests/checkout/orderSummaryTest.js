@@ -13,6 +13,7 @@ describe('Test Suite: renderOrderSummary', () => {
         const mockElementCheckoutHeader = document.createElement('div');
         mockElementCheckoutHeader.className = 'checkoutHeader';
         document.body.appendChild(mockElementCheckoutHeader);
+        
         spyOn(localStorage, 'setItem');
 
         spyOn(localStorage, 'getItem').and.callFake(() => {
@@ -45,7 +46,7 @@ describe('Test Suite: renderOrderSummary', () => {
                    .innerText).toContain('Quantity: 2');
         expect(document.querySelector('.productQuantity-15b6fc6f-327a-4ec4-896f-486349e85a3d')
                .innerText).toContain('Quantity: 1');
-        
+
         });
     
     it('Removes a product', () => {
@@ -61,4 +62,16 @@ describe('Test Suite: renderOrderSummary', () => {
         expect(cart[0].id).toEqual('15b6fc6f-327a-4ec4-896f-486349e85a3d');
     });
     
+    it('Gets delivery option', () => {
+        document.querySelector('.deliveryOptionInput-3-e43638ce-6aa0-4b85-b27f-e1d07eb678c6').click();
+
+        expect(document.querySelector('.deliveryOptionInput-3-e43638ce-6aa0-4b85-b27f-e1d07eb678c6').checked).toEqual(true);
+        expect(cart.length).toEqual(2);
+        expect(cart[0].id).toEqual('e43638ce-6aa0-4b85-b27f-e1d07eb678c6');
+        expect(cart[0].deliveryOptionId).toEqual('3');
+        expect(document.querySelector('.paymentSummaryShipping').innerText).toContain('$14.98')
+        expect(document.querySelector('.paymentSummaryTotal').innerText).toContain('$63.50')
+    })
+    
 });
+
