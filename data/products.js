@@ -1,4 +1,4 @@
-import { formatCurrency } from "../scripts/utils/money.js";
+import {formatCurrency} from "../scripts/utils/money.js";
 
 export function getProduct(productId) {
   let matchingProduct;
@@ -81,6 +81,28 @@ class Appliance extends Product {
 
 export let products = [];
 
+export function loadProductsFetch() {
+  return fetch('https://supersimplebackend.dev/products')
+      .then((response) => {
+        return response.json()
+      })
+      .then((productsData) => {
+        products = productsData.map((productDetails) => {
+          if (productDetails.type === 'clothing') {
+            return new Clothing(productDetails)
+          } else if (productDetails.type === 'appliance') {
+            return new Appliance(productDetails)
+          }
+          return new Product(productDetails)
+        });
+      });
+}
+
+/*loadProductsFetch()
+    .then(() => {
+      console.log(products)
+    });
+
 export function loadProducts(fun) {
   const xhr = new XMLHttpRequest();
 
@@ -101,6 +123,8 @@ export function loadProducts(fun) {
   xhr.open('GET', 'https://supersimplebackend.dev/products')
   xhr.send()
 }
+
+ */
 /*
 export const products = [
   {
