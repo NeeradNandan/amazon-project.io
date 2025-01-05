@@ -1,12 +1,16 @@
 import {cart, addToCart, displayCartQuantity} from "../data/cart.js";
-import {products} from '../data/products.js';
-import {formatCurrency} from "./utils/money.js";
+import {products, loadProducts} from '../data/products.js';
+//import {formatCurrency} from "./utils/money.js";
 
-let productsHTML = '';
+loadProducts(renderProductsGrid);
+
+function renderProductsGrid() {
+
+    let productsHTML = '';
 
 
-products.forEach((product) => {
-    productsHTML += `
+    products.forEach((product) => {
+        productsHTML += `
     <div class="product-container">
           <div class="product-image-container">
             <img class="product-image"
@@ -61,47 +65,47 @@ products.forEach((product) => {
           </button>
         </div>
     `;
-});
+    });
 
-document.querySelector('.products-grid')
-    .innerHTML  = productsHTML;
+    document.querySelector('.products-grid')
+        .innerHTML = productsHTML;
 
-function updateCartQuantity() {
-    document.querySelector('.cart-quantity').innerHTML = String(displayCartQuantity(cart));
+    function updateCartQuantity() {
+        document.querySelector('.cart-quantity').innerHTML = String(displayCartQuantity(cart));
+    }
+
+    updateCartQuantity();
+
+    document.querySelectorAll('.add-to-cart-button')
+            .forEach((button) => {
+                let addedMessageTimeoutId = {};
+                button
+                    .addEventListener('click', () => {
+                        const {productId} = button.dataset;
+
+                        addToCart(productId);
+
+
+                        //console.log(cartQuantity);
+
+                        document.querySelector('.cart-quantity')
+                            .innerHTML = String(displayCartQuantity(cart));
+
+
+                        const addedMessage = document.querySelector(`.added-to-cart-${productId}`);
+
+                        addedMessage.classList.add('added-to-cart-visible');
+
+                        if (addedMessageTimeoutId) {
+                            clearTimeout(addedMessageTimeoutId);
+                        }
+
+                        addedMessageTimeoutId = setTimeout(() => {
+                            addedMessage.classList.remove('added-to-cart-visible');
+                        }, 2000);
+                    })
+            })
 }
-
-updateCartQuantity();
-
-document.querySelectorAll('.add-to-cart-button')
-        .forEach((button) => {
-            let addedMessageTimeoutId = {};
-            button
-                .addEventListener('click', () => {
-                    const {productId} = button.dataset;
-
-                    addToCart(productId);
-
-
-                    //console.log(cartQuantity);
-
-                    document.querySelector('.cart-quantity')
-                        .innerHTML = String(displayCartQuantity(cart));
-
-
-
-                    const addedMessage = document.querySelector(`.added-to-cart-${productId}`);
-
-                    addedMessage.classList.add('added-to-cart-visible');
-
-                    if(addedMessageTimeoutId) {
-                        clearTimeout(addedMessageTimeoutId);
-                    }
-
-                    addedMessageTimeoutId = setTimeout(() => {
-                        addedMessage.classList.remove('added-to-cart-visible');
-                    }, 2000);
-                })
-        })
 /*
 Below is my own implementation
  */
