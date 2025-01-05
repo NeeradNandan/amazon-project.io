@@ -91,14 +91,10 @@ class Cart {
 
 }
 
-
-const cart = new Cart('cart-oop');
+const cart = new Cart('cart-oop'); //Instance of the Cart class
 const businessCart = new Cart('cart-business');
 
-
-
 //cart.addToCart('8c9c52b5-5a19-4bcb-a5d1-158a74287c53');
-
 
 console.log(cart);
 console.log(businessCart);
