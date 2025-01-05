@@ -4,12 +4,39 @@ import {renderCheckoutHeader} from "./checkout/checkoutHeader.js";
 import {loadProductsFetch} from "../data/products.js";
 // import '../data/cart-class.js';
 //import '../data/backend-practice.js'
-loadProductsFetch()
+async function loadPage() {
+    try {
+        await loadProductsFetch();
+    }
+    catch(error) {
+        console.log(error);
+    }
+
+    renderOrderSummary();
+    renderPaymentSummary();
+    renderCheckoutHeader();
+}
+
+loadPage();
+
+/*
+Async should always be followed by await, await cannot be used outside or after a method.
+ */
+
+/*loadProductsFetch()
     .then(() => {
         renderOrderSummary();
         renderPaymentSummary();
         renderCheckoutHeader();
     })
+    
+ */
+/*
+The issue with promises is that we have to write a lot of code like resolve and use Promise everytime to use a new
+ method and use then to get values from the previous promise and run the next method.
+ Instead, we can use async/await.
+ An async returns a promise.
+ */
 
 /*
 The advantage of promise over callback is that it allows us to chain promises together, instead of nesting callbacks.
