@@ -1,7 +1,14 @@
 import { loadFromStorage, cart } from "../../data/cart.js";
 import { renderOrderSummary } from "../../scripts/checkout/orderSummary.js";
+import { loadProducts } from "../../data/products.js";
 
 describe('Test Suite: renderOrderSummary', () => {
+    beforeAll((done) => {
+        loadProducts(() => {
+            done();
+        });
+
+    }) 
 
     beforeEach(() => {
         const mockElementOrder = document.createElement('div');
