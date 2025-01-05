@@ -71,7 +71,6 @@ describe('Test Suite: renderOrderSummary', () => {
         expect(cart[0].deliveryOptionId).toEqual('3');
         expect(document.querySelector('.paymentSummaryShipping').innerText).toContain('$14.98')
         expect(document.querySelector('.paymentSummaryTotal').innerText).toContain('$63.50')
-    })
-    
+    });
 });
 
