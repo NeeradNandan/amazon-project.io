@@ -132,7 +132,7 @@ function renderProductsGrid() {
 
     function handleSearchClick () {
         const searchValue = searchInput.value;
-        return window.location.href = `amazon.html?search=${searchValue}`
+        return window.location.href = `index.html?search=${searchValue}`
     }
 
     searchButton.addEventListener('click', handleSearchClick);
