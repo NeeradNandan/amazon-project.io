@@ -96,7 +96,7 @@ export function renderOrderSummary() {
                          My implementation
                          document.querySelector(`.cart-item-container-${productId}`).remove();
                          document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a
-                         class="return-to-home-link" href="amazon.html">${displayCartQuantity(cart)} items</a>)`;
+                         class="return-to-home-link" href="index.html">${displayCartQuantity(cart)} items</a>)`;
                          document.querySelector('.payment-summary-items').innerHTML = `Items (${displayCartQuantity(cart)})`;
                          //console.log(cart);
 
@@ -231,7 +231,7 @@ export function renderOrderSummary() {
  })
 
  document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a class="return-to-home-link"
- href="amazon.html">${displayCartQuantity(cart)} items</a>)`;
+ href="index.html">${displayCartQuantity(cart)} items</a>)`;
  document.querySelector('.payment-summary-items').innerHTML = `Items (${displayCartQuantity(cart)})`;
 
  function updateSave(productId) {
@@ -240,7 +240,7 @@ export function renderOrderSummary() {
  saveToCart();
 
  document.querySelector(`.quantity-label-${productId}`).innerHTML = `${quantityLabel(productId)}`;
- document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a class="return-to-home-link" href="amazon.html">${displayCartQuantity(cart)} items</a>)`;
+ document.querySelector('.checkout-header-middle-section').innerHTML = `Checkout (<a class="return-to-home-link" href="index.html">${displayCartQuantity(cart)} items</a>)`;
  document.querySelector('.payment-summary-items').innerHTML = `Items (${displayCartQuantity(cart)})`;
 
  document.querySelector('.update-quantity-link').style.display = 'inline';
