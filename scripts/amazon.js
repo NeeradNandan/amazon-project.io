@@ -11,7 +11,26 @@ function renderProductsGrid() {
     let productsHTML = '';
 
 
-    products.forEach((product) => {
+    const url = new URL(window.location.href);
+    const search = url.searchParams.get('search');
+
+    let filteredProducts = products;
+
+    if (search) {
+        filteredProducts = products.filter((product) => {
+            let matchingKeyword;
+
+            product.keywords.forEach((keyword) => {
+                if (keyword.toLowerCase().includes(search.toLowerCase())) {
+                    matchingKeyword = true;
+                }
+            });
+
+            return matchingKeyword || product.name.toLowerCase().includes(search.toLowerCase());
+        })
+    }
+
+    filteredProducts.forEach((product) => {
         productsHTML += `
     <div class="product-container">
           <div class="product-image-container">
@@ -107,6 +126,23 @@ function renderProductsGrid() {
                         }, 2000);
                     })
             })
+
+    const searchButton = document.querySelector('.searchButton');
+    const searchInput = document.querySelector('.searchBar');
+
+    function handleSearchClick () {
+        const searchValue = searchInput.value;
+        return window.location.href = `amazon.html?search=${searchValue}`
+    }
+
+    searchButton.addEventListener('click', handleSearchClick);
+
+    searchInput.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter') {
+            handleSearchClick();
+        }
+    })
+
 }
 /*
 Below is my own implementation
